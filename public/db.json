@@ -1,0 +1,21 @@
+{
+    "classes": [
+        {
+            "code": "CIC0007",
+            "schedule_class": "46T45 (10/08/2026 - 14/12/2026)",
+            "teacher": "CAMILO CHANG DOREA (60H)",
+            "depto_code": "508",
+            "nivel": "G",
+            "ano": "2026",
+            "periodo": "2",
+            "students": [
+                {
+                    "name": "Aluno Exemplo",
+                    "registration": "000000000",
+                    "get_enrolled": false,
+                    "error": ""
+                }
+            ]
+        }
+    ]
+}

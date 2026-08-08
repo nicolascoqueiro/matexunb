@@ -1,0 +1,33 @@
+# Requirements — MatexUnB
+#
+# Dependências diretas:
+#   selenium        — Automação do Chrome para scraping e matrícula no SIGAA
+#   flask           — Servidor web e API REST
+#   flask-cors      — Cross-Origin Resource Sharing para a SPA frontend
+#   beautifulsoup4  — Parsing do HTML da tabela de turmas do SIGAA
+#
+# Dependências indiretas do Selenium (não remover):
+#   attrs, certifi, h11, idna, outcome, PySocks, sniffio,
+#   sortedcontainers, trio, trio-websocket, typing_extensions,
+#   urllib3, websocket-client, wsproto
+
+selenium==4.30.0
+flask
+flask-cors
+beautifulsoup4
+
+# Dependências indiretas do selenium (gerenciadas automaticamente pelo pip)
+attrs==25.3.0
+certifi==2025.1.31
+h11==0.14.0
+idna==3.10
+outcome==1.3.0.post0
+PySocks==1.7.1
+sniffio==1.3.1
+sortedcontainers==2.4.0
+trio==0.29.0
+trio-websocket==0.12.2
+typing_extensions==4.12.2
+urllib3==2.3.0
+websocket-client==1.8.0
+wsproto==1.2.0

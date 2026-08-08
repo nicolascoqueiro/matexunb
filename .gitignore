@@ -1,0 +1,49 @@
+# ========================
+# Ambientes Virtuais Python
+# ========================
+.venv/
+venv/
+ENV/
+env/
+
+# ========================
+# Cache do Python
+# ========================
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# ========================
+# Dados Sensíveis (NUNCA comitar)
+# ========================
+secret/
+secret/db.json
+
+# ========================
+# Arquivos do Sistema Operacional
+# ========================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# ========================
+# Logs e Temporários
+# ========================
+*.log
+scratch/
+
+# ========================
+# IDE / Editor
+# ========================
+.vscode/
+.idea/
+.cursor/
+.fleet/
+*.sublime-project
+*.sublime-workspace

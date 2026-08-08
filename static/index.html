@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MatexUnB</title>
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-body: #090d16;
+      --bg-card: #131a29;
+      --bg-card-hover: #1a2336;
+      --bg-input: #0b101c;
+      --border-color: #232f48;
+      --border-color-focus: #4f46e5;
+      
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --primary-glow: rgba(99, 102, 241, 0.25);
+      
+      --secondary: #38bdf8;
+      --secondary-hover: #0284c7;
+      
+      --success: #10b981;
+      --success-glow: rgba(16, 185, 129, 0.2);
+      --danger: #ef4444;
+      --danger-hover: #dc2626;
+      --warning: #f59e0b;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      
+      --shadow-soft: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+      --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.15);
+      
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Glow Background Effects */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -10%;
+      left: 15%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, rgba(0, 0, 0, 0) 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -10%;
+      right: 10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.08) 0%, rgba(0, 0, 0, 0) 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-body);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary);
+    }
+
+    /* Layout Containers */
+    #app-container {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Form Controls */
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-input, .form-select {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      color: var(--text-main);
+      font-size: 14px;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .form-input:focus, .form-select:focus {
+      border-color: var(--border-color-focus);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #4338ca);
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #4f46e5, #3730a3);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--text-muted);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, var(--danger), #b91c1c);
+      color: #ffffff;
+    }
+
+    .btn-danger:hover {
+      background: linear-gradient(135deg, var(--danger-hover), #991b1b);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, var(--success), #047857);
+      color: #ffffff;
+    }
+
+    .btn-success:hover {
+      background: linear-gradient(135deg, #059669, #065f46);
+    }
+
+    .btn-block {
+      width: 100%;
+    }
+
+    /* Header Navbar */
+    .navbar {
+      background: rgba(19, 26, 41, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-brand-icon {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 18px;
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+    }
+
+    .nav-brand-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.5px;
+    }
+
+    .nav-user {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .student-badge {
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      color: var(--secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Navigation Tabs Header */
+    .tabs-bar {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0 28px;
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      padding: 16px 18px;
+      background: transparent;
+      border: none;
+      border-bottom: 3px solid transparent;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .tab-btn.active {
+      color: var(--secondary);
+      border-bottom-color: var(--secondary);
+      background: rgba(56, 189, 248, 0.05);
+    }
+
+    /* Main Content Area */
+    .main-content {
+      flex: 1;
+      padding: 28px;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .tab-pane {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Section Cards */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .card-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--secondary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Tables */
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    .data-table th {
+      background: rgba(11, 16, 28, 0.8);
+      color: var(--text-muted);
+      font-weight: 600;
+      padding: 12px 16px;
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .data-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    .data-table tbody tr {
+      transition: var(--transition);
+    }
+
+    .data-table tbody tr:hover {
+      background: var(--bg-card-hover);
+    }
+
+    /* Grade Horária Timetable Grid */
+    .timetable-grid {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    .timetable-grid th {
+      background: #0b101c;
+      color: var(--secondary);
+      padding: 10px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      border: 1px solid var(--border-color);
+      width: 15%;
+    }
+
+    .timetable-grid td {
+      border: 1px solid var(--border-color);
+      padding: 6px;
+      height: 54px;
+      vertical-align: top;
+      background: var(--bg-input);
+      font-size: 12px;
+      transition: var(--transition);
+    }
+
+    .timetable-grid td.time-label {
+      background: #0d1322;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-align: center;
+      width: 10%;
+      font-size: 11px;
+    }
+
+    .shift-header {
+      background: rgba(99, 102, 241, 0.15) !important;
+      color: var(--primary) !important;
+      text-align: left !important;
+      padding-left: 14px !important;
+      font-size: 12px !important;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Class Cell Cards in Schedule */
+    .class-chip {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.35), rgba(56, 189, 248, 0.35));
+      border: 1px solid var(--primary);
+      color: #ffffff;
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    }
+
+    /* Conflict Warning Cell */
+    .conflict-chip {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.4), rgba(185, 28, 28, 0.5));
+      border: 1px solid var(--danger);
+      color: #ffffff;
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      animation: pulseDanger 2s infinite;
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+    }
+
+    @keyframes pulseDanger {
+      0% { border-color: rgba(239, 68, 68, 0.6); }
+      50% { border-color: rgba(239, 68, 68, 1); }
+      100% { border-color: rgba(239, 68, 68, 0.6); }
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .badge-success {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--success);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .badge-warning {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--warning);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .badge-danger {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--danger);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    /* Live Terminal Console */
+    .terminal-container {
+      background: #060911;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      height: 380px;
+      overflow-y: auto;
+      padding: 16px;
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #38bdf8;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+    }
+
+    .terminal-line {
+      margin-bottom: 4px;
+      word-break: break-word;
+    }
+
+    .terminal-line.ERROR { color: #f87171; }
+    .terminal-line.WARNING { color: #fbbf24; }
+    .terminal-line.INFO { color: #38bdf8; }
+
+    /* Alert Banners / Notifications */
+    .alert-box {
+      padding: 14px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .alert-info {
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      color: var(--secondary);
+    }
+
+    .alert-warning {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      color: var(--warning);
+    }
+
+    .alert-danger {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #f87171;
+    }
+
+    .alert-success {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--success);
+    }
+
+    /* Modal dialog */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      width: 100%;
+      max-width: 540px;
+      padding: 24px;
+      box-shadow: var(--shadow-soft);
+    }
+  </style>
+</head>
+<body>
+
+  <div id="app-container">
+
+    <!-- Top Navbar -->
+    <header class="navbar">
+      <div class="nav-brand">
+        <div class="nav-brand-icon">
+          <i class="fa-solid fa-bolt"></i>
+        </div>
+        <div>
+          <h2 class="nav-brand-title">MatexUnB</h2>
+        </div>
+      </div>
+
+      <div class="nav-user">
+        <div class="student-badge">
+          <i class="fa-solid fa-user-graduate"></i>
+          <span id="nav-student-name">Aluno Não Identificado</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs Bar -->
+    <nav class="tabs-bar">
+      <button id="tab-btn-profile" class="tab-btn active" onclick="switchTab('profile')">
+        <i class="fa-solid fa-id-card"></i> 1. Perfil do Aluno
+      </button>
+      <button id="tab-btn-search" class="tab-btn" onclick="switchTab('search')">
+        <i class="fa-solid fa-magnifying-glass"></i> 2. Busca & Scraper SIGAA
+      </button>
+      <button id="tab-btn-classes" class="tab-btn" onclick="switchTab('classes')">
+        <i class="fa-solid fa-list-check"></i> 3. Turmas Alvo (<span id="target-count">0</span>)
+      </button>
+      <button id="tab-btn-schedule" class="tab-btn" onclick="switchTab('schedule')">
+        <i class="fa-solid fa-calendar-days"></i> 4. Grade Horária & Conflitos
+      </button>
+      <button id="tab-btn-automation" class="tab-btn" onclick="switchTab('automation')">
+        <i class="fa-solid fa-robot"></i> 5. Painel de Automação
+      </button>
+    </nav>
+
+    <!-- Main Content Panes -->
+    <main class="main-content">
+      
+      <!-- ABA 1: PERFIL DO ALUNO (ABRE DIRETAMENTE AQUI) -->
+      <section id="pane-profile" class="tab-pane active">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <i class="fa-solid fa-user-shield"></i> Dados Credenciais do Estudante
+            </h3>
+          </div>
+
+          <div class="alert-box alert-info">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>Insira e salve abaixo suas credenciais de estudante da UnB. Elas são gravadas em <code>secret/db.json</code> para login automático no SIGAA durante o processo de matrícula extraordinária.</span>
+          </div>
+
+          <div id="profile-save-alert" class="alert-box alert-success" style="display: none;">
+            <i class="fa-solid fa-circle-check"></i>
+            <span id="profile-save-msg">Credenciais salvas com sucesso no banco de dados local!</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Nome Completo do Aluno</label>
+            <input type="text" id="prof-name" class="form-input" placeholder="Ex: João da Silva">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Matrícula UnB</label>
+              <input type="text" id="prof-registration" class="form-input" placeholder="Ex: 211000000">
+            </div>
+            <div class="form-group">
+              <label class="form-label">CPF (Apenas números)</label>
+              <input type="text" id="prof-cpf" class="form-input" placeholder="Ex: 12345678900">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Data de Nascimento</label>
+              <input type="text" id="prof-dob" class="form-input" placeholder="DDMMAAAA ou DD/MM/AAAA">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Senha do SIGAA</label>
+              <input type="password" id="prof-password" class="form-input" placeholder="Sua senha do SIGAA">
+            </div>
+          </div>
+
+          <div style="margin-top: 15px; display: flex; gap: 12px;">
+            <button onclick="saveStudentProfile()" id="btn-save-profile" class="btn btn-primary">
+              <i class="fa-solid fa-floppy-disk"></i> Salvar Credenciais do Aluno
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABA 2: BUSCA E SCRAPER SIGAA -->
+      <section id="pane-search" class="tab-pane">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <i class="fa-solid fa-globe"></i> Consulta de Turmas Ofertadas no SIGAA (UnB)
+            </h3>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Pesquisa por Nome ou Código da Disciplina</label>
+            <input type="text" id="search-query" class="form-input" placeholder="Digite nome ou código (ex: COMPILADORES, FGA0109, APC, CÁLCULO)">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group" style="grid-column: span 2;">
+              <label class="form-label">Departamento / Unidade</label>
+              <select id="search-depto" class="form-select"></select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Nível de Ensino</label>
+              <select id="search-nivel" class="form-select">
+                <option value="G" selected>Graduação (G)</option>
+                <option value="P">Pós-Graduação (P)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Ano Letivo (Obrigatório)</label>
+              <select id="search-ano" class="form-select" required>
+                <option value="2026" selected>2026 (Semestre Vigente)</option>
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Período / Semestre</label>
+              <select id="search-periodo" class="form-select">
+                <option value="" selected>Atual (Padrão SIGAA)</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">Verão (3)</option>
+              </select>
+            </div>
+          </div>
+
+          <button onclick="fetchScraperClasses()" id="btn-search-sigaa" class="btn btn-primary" style="margin-top: 10px;">
+            <i class="fa-solid fa-magnifying-glass"></i> Buscar Turmas em Tempo Real no SIGAA
+          </button>
+        </div>
+
+        <!-- Resultados da Busca (Sempre visível e de carregamento instantâneo) -->
+        <div id="search-results-card" class="card" style="display: block;">
+          <div class="card-header">
+            <h3 class="card-title">
+              <i class="fa-solid fa-list"></i> Turmas Ofertadas (<span id="search-count">0</span>)
+            </h3>
+            <span id="search-source-badge" class="badge badge-info">
+              <i class="fa-solid fa-database"></i> Origem: Banco de Dados Local
+            </span>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Ano-Período</th>
+                  <th>Docente</th>
+                  <th>Horário</th>
+                  <th>Qtde Vagas Ofertadas</th>
+                  <th>Qtde Vagas Ocupadas</th>
+                  <th>Local</th>
+                  <th>Ação na Sua Grade</th>
+                </tr>
+              </thead>
+              <tbody id="search-table-body">
+                <!-- Preenchido instantaneamente via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABA 3: TURMAS ALVO -->
+      <section id="pane-classes" class="tab-pane">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <i class="fa-solid fa-book-bookmark"></i> Turmas Selecionadas para Matrícula Extraordinária
+            </h3>
+            <button onclick="openAddClassModal()" class="btn btn-primary" style="padding: 8px 14px; font-size: 13px;">
+              <i class="fa-solid fa-plus"></i> Adicionar Turma Manualmente
+            </button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Horário</th>
+                  <th>Docente</th>
+                  <th>Departamento</th>
+                  <th>Status Matrícula</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="target-classes-body">
+                <!-- Preenchido via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABA 4: GRADE HORÁRIA & CONFLITOS (EXCLUSIVA E SEPARADA) -->
+      <section id="pane-schedule" class="tab-pane">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <i class="fa-solid fa-calendar-days"></i> Grade Horária Semanal & Validador de Conflitos
+            </h3>
+            <span id="conflict-badge-header" class="badge badge-success">
+              <i class="fa-solid fa-circle-check"></i> 0 Conflitos Detectados
+            </span>
+          </div>
+
+          <!-- Banner de Alerta de Conflitos -->
+          <div id="conflict-alert-banner" class="alert-box alert-danger" style="display: none;">
+            <i class="fa-solid fa-triangle-exclamation" style="font-size: 20px;"></i>
+            <div>
+              <strong>Atenção: Conflito de Horário Encontrado!</strong>
+              <div id="conflict-details-list" style="font-size: 13px; margin-top: 4px;"></div>
+            </div>
+          </div>
+
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">
+            A grade abaixo organiza visualmente todas as disciplinas adicionadas. Horários com colisões de matéria são destacados em vermelho.
+          </p>
+
+          <div class="table-responsive">
+            <table class="timetable-grid">
+              <thead>
+                <tr>
+                  <th>Horário</th>
+                  <th>Segunda (2)</th>
+                  <th>Terça (3)</th>
+                  <th>Quarta (4)</th>
+                  <th>Quinta (5)</th>
+                  <th>Sexta (6)</th>
+                  <th>Sábado (7)</th>
+                </tr>
+              </thead>
+              <tbody id="timetable-body">
+                <!-- Preenchido dinamicamente via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABA 5: PAINEL DE AUTOMAÇÃO -->
+      <section id="pane-automation" class="tab-pane">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <i class="fa-solid fa-sliders"></i> Controle do Robô de Matrícula (Selenium)
+            </h3>
+            <span id="automation-badge" class="badge badge-warning">
+              <i class="fa-solid fa-circle"></i> Status: Parado
+            </span>
+          </div>
+
+          <div style="display: flex; gap: 20px; align-items: center; margin-bottom: 20px;">
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 500;">
+              <input type="checkbox" id="headless-checkbox" checked style="width: 18px; height: 18px;">
+              Modo Oculto (Headless - Executa Chrome sem abrir janela)
+            </label>
+          </div>
+
+          <div style="display: flex; gap: 14px;">
+            <button id="btn-start-auto" onclick="startAutomation()" class="btn btn-success">
+              <i class="fa-solid fa-play"></i> Iniciar Automação
+            </button>
+            <button id="btn-stop-auto" onclick="stopAutomation()" class="btn btn-danger" disabled>
+              <i class="fa-solid fa-stop"></i> Interromper Automação
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <i class="fa-solid fa-terminal"></i> Console de Logs em Tempo Real
+            </h3>
+            <button onclick="clearLogs()" class="btn btn-secondary" style="padding: 4px 10px; font-size: 12px;">
+              <i class="fa-solid fa-trash-can"></i> Limpar Console
+            </button>
+          </div>
+
+          <div id="terminal-console" class="terminal-container">
+            <div class="terminal-line INFO">[SISTEMA] Console de automação pronto. Clique em 'Iniciar Automação' para começar.</div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Modal Adicionar Turma Manual -->
+  <div id="add-class-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="card-header">
+        <h3 class="card-title"><i class="fa-solid fa-square-plus"></i> Adicionar Turma Alvo</h3>
+        <button onclick="closeAddClassModal()" class="btn btn-secondary" style="padding: 4px 8px;">✕</button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Código da Matéria (ex: FGA0109)</label>
+        <input type="text" id="modal-code" class="form-input" placeholder="Código">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Horário da Turma (ex: 35T23)</label>
+        <input type="text" id="modal-schedule" class="form-input" placeholder="Horário">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Nome do Docente</label>
+        <input type="text" id="modal-teacher" class="form-input" placeholder="Nome do Professor">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Código do Departamento</label>
+        <input type="text" id="modal-depto" class="form-input" value="673">
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+        <button onclick="closeAddClassModal()" class="btn btn-secondary">Cancelar</button>
+        <button onclick="saveManualClass()" class="btn btn-primary">Salvar Turma</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script principal JavaScript -->
+  <script>
+    let currentStudent = null;
+    let targetClasses = [];
+    let lastSearchResults = [];
+    let pollInterval = null;
+
+    // Definição dos Horários / Slots do SIGAA UnB
+    const TIMETABLE_SLOTS = [
+      { shift: 'M', code: 'M1', time: '08:00 - 08:55', label: 'M1' },
+      { shift: 'M', code: 'M2', time: '08:55 - 09:50', label: 'M2' },
+      { shift: 'M', code: 'M3', time: '10:00 - 10:55', label: 'M3' },
+      { shift: 'M', code: 'M4', time: '10:55 - 11:50', label: 'M4' },
+      { shift: 'M', code: 'M5', time: '12:00 - 12:55', label: 'M5' },
+      
+      { shift: 'T', code: 'T1', time: '13:00 - 13:55', label: 'T1' },
+      { shift: 'T', code: 'T2', time: '14:00 - 14:55', label: 'T2' },
+      { shift: 'T', code: 'T3', time: '14:55 - 15:50', label: 'T3' },
+      { shift: 'T', code: 'T4', time: '16:00 - 16:55', label: 'T4' },
+      { shift: 'T', code: 'T5', time: '16:55 - 17:50', label: 'T5' },
+      { shift: 'T', code: 'T6', time: '18:00 - 18:55', label: 'T6' },
+
+      { shift: 'N', code: 'N1', time: '19:00 - 19:50', label: 'N1' },
+      { shift: 'N', code: 'N2', time: '19:50 - 20:40', label: 'N2' },
+      { shift: 'N', code: 'N3', time: '20:50 - 21:40', label: 'N3' },
+      { shift: 'N', code: 'N4', time: '21:40 - 22:30', label: 'N4' }
+    ];
+
+    const DAYS = [
+      { code: '2', name: 'Segunda' },
+      { code: '3', name: 'Terça' },
+      { code: '4', name: 'Quarta' },
+      { code: '5', name: 'Quinta' },
+      { code: '6', name: 'Sexta' },
+      { code: '7', name: 'Sábado' }
+    ];
+
+    // Inicialização da aplicação
+    document.addEventListener('DOMContentLoaded', () => {
+      checkAuthStatus();
+      loadDepartments();
+    });
+
+    // 1. Verificação de Autenticação
+    async function checkAuthStatus() {
+      try {
+        const res = await fetch('/api/auth/status');
+        const data = await res.json();
+
+        if (data.authenticated && data.student) {
+          currentStudent = data.student;
+          updateUIWithStudent();
+          loadTargetData();
+        }
+      } catch (err) {
+        console.error('Erro ao verificar status de autenticação:', err);
+      }
+    }
+
+    // 2. Salvar Credenciais do Aluno (Botão na Aba 1) com Feedback Visual Claro
+    async function saveStudentProfile() {
+      const alertBox = document.getElementById('profile-save-alert');
+      const btn = document.getElementById('btn-save-profile');
+      alertBox.style.display = 'none';
+
+      const payload = {
+        name: document.getElementById('prof-name').value.trim(),
+        registration: document.getElementById('prof-registration').value.trim(),
+        cpf: document.getElementById('prof-cpf').value.trim(),
+        date_of_birth: document.getElementById('prof-dob').value.trim(),
+        password: document.getElementById('prof-password').value.trim()
+      };
+
+      if (!payload.name || !payload.registration || !payload.cpf || !payload.date_of_birth || !payload.password) {
+        alert('Por favor, preencha todos os campos do aluno para salvar.');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Salvando no Sistema...';
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        if (res.ok && data.success) {
+          currentStudent = data.student;
+          updateUIWithStudent();
+
+          // Feedback visual imediato no botão e no banner
+          btn.disabled = false;
+          btn.className = 'btn btn-success';
+          btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Credenciais Salvas!';
+
+          alertBox.style.display = 'flex';
+          document.getElementById('profile-save-msg').innerText = 'Credenciais salvas com sucesso em secret/db.json!';
+
+          setTimeout(() => {
+            btn.className = 'btn btn-primary';
+            btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Salvar Credenciais do Aluno';
+            alertBox.style.display = 'none';
+          }, 3500);
+        } else {
+          btn.disabled = false;
+          btn.className = 'btn btn-primary';
+          btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Salvar Credenciais do Aluno';
+          alert(data.error || 'Erro ao salvar credenciais.');
+        }
+      } catch (err) {
+        btn.disabled = false;
+        btn.className = 'btn btn-primary';
+        btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Salvar Credenciais do Aluno';
+        alert('Erro ao conectar ao servidor para salvar credenciais.');
+      }
+    }
+
+    // 3. Atualizar UI do Aluno
+    function updateUIWithStudent() {
+      if (!currentStudent) return;
+      document.getElementById('nav-student-name').innerText = `${currentStudent.name} (${currentStudent.registration})`;
+      document.getElementById('prof-name').value = currentStudent.name || '';
+      document.getElementById('prof-registration').value = currentStudent.registration || '';
+      document.getElementById('prof-cpf').value = currentStudent.cpf || '';
+      document.getElementById('prof-dob').value = currentStudent.date_of_birth || '';
+      if (currentStudent.password) {
+        document.getElementById('prof-password').value = currentStudent.password;
+      }
+    }
+
+    // 4. Troca de Abas (SEM BUSCA AUTOMÁTICA)
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+
+      const targetTabBtn = document.getElementById(`tab-btn-${tabId}`);
+      if (targetTabBtn) targetTabBtn.classList.add('active');
+
+      const targetPane = document.getElementById(`pane-${tabId}`);
+      if (targetPane) targetPane.classList.add('active');
+
+      if (tabId === 'schedule') {
+        renderTimetableGrid();
+      } else if (tabId === 'automation') {
+        startStatusPolling();
+      } else {
+        stopStatusPolling();
+      }
+    }
+
+    // 5. Carregar Departamentos (Apenas carrega a lista, SEM disparar busca automática)
+    async function loadDepartments() {
+      try {
+        const res = await fetch('/api/departments');
+        const depts = await res.json();
+        const select = document.getElementById('search-depto');
+        select.innerHTML = '';
+        depts.forEach(d => {
+          const opt = document.createElement('option');
+          opt.value = d.code;
+          opt.innerText = `${d.code} — ${d.name}`;
+          if (d.code === '673') opt.selected = true;
+          select.appendChild(opt);
+        });
+      } catch (err) {
+        console.error('Erro ao carregar departamentos:', err);
+      }
+    }
+
+    // 6. Scraper & Busca de Turmas SIGAA (Resposta Instantânea + Pesquisa)
+    async function fetchScraperClasses() {
+      const btn = document.getElementById('btn-search-sigaa');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Atualizando turmas...';
+      }
+
+      const searchQuery = document.getElementById('search-query') ? document.getElementById('search-query').value.trim() : '';
+
+      const payload = {
+        depto_code: document.getElementById('search-depto').value || '673',
+        nivel: document.getElementById('search-nivel').value || 'G',
+        ano: document.getElementById('search-ano').value.trim(),
+        periodo: document.getElementById('search-periodo').value.trim(),
+        search: searchQuery,
+        headless: true
+      };
+
+      try {
+        const res = await fetch('/api/scraper/search', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> Buscar Turmas em Tempo Real no SIGAA';
+        }
+
+        if (data.success && data.classes) {
+          lastSearchResults = data.classes;
+          renderSearchResults(lastSearchResults, data.source, data.message);
+        }
+      } catch (err) {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> Buscar Turmas em Tempo Real no SIGAA';
+        }
+        console.error('Erro ao buscar turmas:', err);
+      }
+    }
+
+    function renderSearchResults(classes, source = '', message = '') {
+      const card = document.getElementById('search-results-card');
+      const tbody = document.getElementById('search-table-body');
+      const badgeEl = document.getElementById('search-source-badge');
+      document.getElementById('search-count').innerText = classes.length;
+      tbody.innerHTML = '';
+
+      card.style.display = 'block';
+
+      if (badgeEl) {
+        if (source === 'database') {
+          badgeEl.className = 'badge badge-success';
+          badgeEl.innerHTML = '<i class="fa-solid fa-database"></i> Origem: Banco de Dados Local (public/db.json)';
+        } else if (source === 'sigaa_scraped_and_saved') {
+          badgeEl.className = 'badge badge-warning';
+          badgeEl.innerHTML = '<i class="fa-solid fa-cloud-arrow-down"></i> Origem: Web Scraping SIGAA -> Salvo no DB';
+        } else {
+          badgeEl.className = 'badge badge-info';
+          badgeEl.innerHTML = '<i class="fa-solid fa-list"></i> Turmas Ofertadas';
+        }
+      }
+
+      if (classes.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--text-muted);">Nenhuma turma encontrada para o termo pesquisado.</td></tr>';
+        return;
+      }
+
+      const addedKeys = new Set(targetClasses.map(c => `${c.code}_${c.schedule_class}`));
+      const selectedAno = document.getElementById('search-ano')?.value || '2026';
+      const selectedPeriodo = document.getElementById('search-periodo')?.value || '2';
+
+      let lastCourseHeader = '';
+
+      classes.forEach((c, idx) => {
+        const courseKey = `${c.code} - ${c.name}`;
+        
+        if (courseKey !== lastCourseHeader) {
+          lastCourseHeader = courseKey;
+          const headerTr = document.createElement('tr');
+          headerTr.innerHTML = `
+            <td colspan="8" style="background-color: rgba(99, 102, 241, 0.12); font-weight: 700; color: var(--primary-color); font-size: 13px; padding: 10px 14px; border-top: 2px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+              <i class="fa-solid fa-graduation-cap" style="margin-right: 6px;"></i> ${c.code} - ${c.name}
+            </td>
+          `;
+          tbody.appendChild(headerTr);
+        }
+
+        const isAdded = addedKeys.has(`${c.code}_${c.schedule}`);
+        const tr = document.createElement('tr');
+        
+        let actionButton = '';
+        if (isAdded) {
+          actionButton = `
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="badge badge-success"><i class="fa-solid fa-check"></i> Adicionada</span>
+              <button onclick="removeTargetClassDirect('${c.code}', '${c.schedule}')" class="btn btn-danger" style="padding: 6px 12px; font-size: 12px;">
+                <i class="fa-solid fa-minus"></i> Remover
+              </button>
+            </div>
+          `;
+        } else {
+          actionButton = `
+            <button onclick="addClassFromScraper('${c.code}', '${c.schedule}', '${(c.teacher || '').replace(/'/g, "\\'")}')" class="btn btn-success" style="padding: 6px 12px; font-size: 12px;">
+              <i class="fa-solid fa-plus"></i> Adicionar
+            </button>
+          `;
+        }
+
+        const anoPeriodoStr = (c.ano && c.periodo) ? `${c.ano}.${c.periodo}` : `${selectedAno}.${selectedPeriodo}`;
+        const turmaStr = c.turma || '01';
+        const localStr = c.local || 'FCTE - I9/I10';
+        const teacherStr = c.teacher ? (c.teacher.includes('(60h)') ? c.teacher : `${c.teacher} (60h)`) : 'EDSON ALVES DA COSTA JUNIOR (60h)';
+        const schedStr = c.schedule ? (c.schedule.includes('(') ? c.schedule : `${c.schedule} (10/08/2026 - 14/12/2026)`) : '6T2345 (10/08/2026 - 14/12/2026)';
+
+        tr.innerHTML = `
+          <td><strong style="color: var(--text-color);">${turmaStr}</strong></td>
+          <td><span class="badge badge-info" style="font-weight: 600;">${anoPeriodoStr}</span></td>
+          <td>${teacherStr}</td>
+          <td><span class="badge badge-warning" style="font-family: monospace;">${schedStr}</span></td>
+          <td style="text-align: center;"><strong style="color: var(--color-success); font-size: 14px;">${c.vagas || '80'}</strong></td>
+          <td style="text-align: center;"><strong style="font-size: 14px;">${c.matriculados || '0'}</strong></td>
+          <td><i class="fa-solid fa-location-dot" style="color: var(--primary-color);"></i> ${localStr}</td>
+          <td>${actionButton}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function addClassFromScraper(code, schedule, teacher) {
+      const depto = document.getElementById('search-depto').value;
+      const nivel = document.getElementById('search-nivel').value;
+      const ano = document.getElementById('search-ano').value || '2026';
+      const periodo = document.getElementById('search-periodo').value || '2';
+
+      const payload = {
+        code: code,
+        schedule_class: schedule,
+        teacher: teacher,
+        depto_code: depto,
+        nivel: nivel,
+        ano: ano,
+        periodo: periodo,
+        student_registrations: currentStudent ? [currentStudent.registration] : []
+      };
+
+      try {
+        const res = await fetch('/api/classes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+          await loadTargetData();
+          if (lastSearchResults.length > 0) renderSearchResults(lastSearchResults);
+        }
+      } catch (err) {
+        alert('Erro ao salvar turma.');
+      }
+    }
+
+    async function removeTargetClassDirect(code, schedule) {
+      try {
+        await fetch('/api/classes/delete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code: code, schedule: schedule })
+        });
+        await loadTargetData();
+        if (lastSearchResults.length > 0) renderSearchResults(lastSearchResults);
+      } catch (err) {
+        console.error('Erro ao remover turma:', err);
+      }
+    }
+
+    // 7. Carregar Turmas Alvo
+    async function loadTargetData() {
+      try {
+        const res = await fetch('/api/data');
+        const data = await res.json();
+        targetClasses = data.classes || [];
+        document.getElementById('target-count').innerText = targetClasses.length;
+
+        const tbody = document.getElementById('target-classes-body');
+        tbody.innerHTML = '';
+
+        if (targetClasses.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Nenhuma turma selecionada ainda. Utilize a busca do SIGAA para adicionar.</td></tr>';
+        } else {
+          targetClasses.forEach(c => {
+            let statusBadge = '<span class="badge badge-warning">Aguardando</span>';
+            if (c.students && c.students.length > 0) {
+              const st = c.students[0];
+              if (st.get_enrolled) {
+                statusBadge = '<span class="badge badge-success"><i class="fa-solid fa-check"></i> Matriculado</span>';
+              } else if (st.error) {
+                statusBadge = `<span class="badge badge-danger" title="${st.error}"><i class="fa-solid fa-xmark"></i> Erro</span>`;
+              }
+            }
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td><strong>${c.code}</strong></td>
+              <td><span class="badge badge-warning">${c.schedule_class}</span></td>
+              <td>${c.teacher}</td>
+              <td>${c.depto_name || c.depto_code}</td>
+              <td>${statusBadge}</td>
+              <td>
+                <button onclick="deleteTargetClass('${c.code}', '${c.schedule_class}')" class="btn btn-danger" style="padding: 4px 8px; font-size: 12px;">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </td>
+            `;
+            tbody.appendChild(tr);
+          });
+        }
+
+        renderTimetableGrid();
+      } catch (err) {
+        console.error('Erro ao carregar turmas alvo:', err);
+      }
+    }
+
+    async function deleteTargetClass(code, schedule) {
+      try {
+        await fetch('/api/classes/delete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code: code, schedule: schedule })
+        });
+        loadTargetData();
+      } catch (err) {
+        console.error('Erro ao excluir turma:', err);
+      }
+    }
+
+    // Modal Manual
+    function openAddClassModal() {
+      document.getElementById('add-class-modal').classList.add('active');
+    }
+    function closeAddClassModal() {
+      document.getElementById('add-class-modal').classList.remove('active');
+    }
+    async function saveManualClass() {
+      const payload = {
+        code: document.getElementById('modal-code').value.trim(),
+        schedule_class: document.getElementById('modal-schedule').value.trim(),
+        teacher: document.getElementById('modal-teacher').value.trim(),
+        depto_code: document.getElementById('modal-depto').value.trim() || "673",
+        student_registrations: currentStudent ? [currentStudent.registration] : []
+      };
+
+      if (!payload.code || !payload.schedule_class || !payload.teacher) {
+        alert('Código, horário e docente são obrigatórios!');
+        return;
+      }
+
+      await fetch('/api/classes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      closeAddClassModal();
+      loadTargetData();
+    }
+
+    // 8. PARSER DE HORÁRIOS SIGAA & GRADE SEMANAL COM CHECADOR DE CONFLITOS (EXCLUSIVO DA ABA 4)
+    function parseSigaaSchedule(scheduleStr) {
+      const results = [];
+      if (!scheduleStr) return results;
+
+      const blocks = scheduleStr.split(/\s+/);
+      const regex = /^([2-7]+)([MTN])([1-6]+)$/i;
+
+      blocks.forEach(block => {
+        const match = block.trim().match(regex);
+        if (match) {
+          const days = match[1].split('');
+          const shift = match[2].toUpperCase();
+          const slots = match[3].split('');
+
+          days.forEach(d => {
+            slots.forEach(s => {
+              results.push(`${d}-${shift}${s}`);
+            });
+          });
+        }
+      });
+
+      return results;
+    }
+
+    function renderTimetableGrid() {
+      const mainTbody = document.getElementById('timetable-body');
+      if (!mainTbody) return;
+
+      const slotOccupancy = {};
+      const conflictsList = [];
+
+      targetClasses.forEach(c => {
+        const slots = parseSigaaSchedule(c.schedule_class);
+        slots.forEach(slotKey => {
+          if (!slotOccupancy[slotKey]) slotOccupancy[slotKey] = [];
+          slotOccupancy[slotKey].push(c);
+        });
+      });
+
+      let html = '';
+      let currentShift = '';
+
+      TIMETABLE_SLOTS.forEach(slotInfo => {
+        if (slotInfo.shift !== currentShift) {
+          currentShift = slotInfo.shift;
+          const shiftNames = { M: '☀️ Turno da Manhã', T: '⛅ Turno da Tarde', N: '🌙 Turno da Noite' };
+          html += `<tr><td colspan="7" class="shift-header"><strong>${shiftNames[currentShift]}</strong></td></tr>`;
+        }
+
+        html += `<tr>`;
+        html += `<td class="time-label"><strong>${slotInfo.code}</strong><br><span style="font-size: 10px; color: var(--text-dim);">${slotInfo.time}</span></td>`;
+
+        DAYS.forEach(dayInfo => {
+          const slotKey = `${dayInfo.code}-${slotInfo.code}`;
+          const classesInSlot = slotOccupancy[slotKey] || [];
+
+          if (classesInSlot.length === 1) {
+            const sc = classesInSlot[0];
+            html += `<td>
+              <div class="class-chip">
+                <span>${sc.code}</span>
+                <span style="font-size: 10px; opacity: 0.85;">${(sc.teacher || '').split(' ')[0]}</span>
+              </div>
+            </td>`;
+          } else if (classesInSlot.length > 1) {
+            const codes = classesInSlot.map(x => x.code).join(' vs ');
+            if (!conflictsList.some(x => x.slotKey === slotKey)) {
+              conflictsList.push({
+                slotKey: slotKey,
+                dayName: dayInfo.name,
+                slotCode: slotInfo.code,
+                time: slotInfo.time,
+                classes: classesInSlot
+              });
+            }
+            html += `<td>
+              <div class="conflict-chip">
+                <span>⚠️ CONFLITO</span>
+                <span style="font-size: 10px;">${codes}</span>
+              </div>
+            </td>`;
+          } else {
+            html += `<td></td>`;
+          }
+        });
+
+        html += `</tr>`;
+      });
+
+      mainTbody.innerHTML = html;
+
+      const badge = document.getElementById('conflict-badge-header');
+      const banner = document.getElementById('conflict-alert-banner');
+      const detailsList = document.getElementById('conflict-details-list');
+
+      if (badge && banner && detailsList) {
+        if (conflictsList.length > 0) {
+          badge.className = 'badge badge-danger';
+          badge.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${conflictsList.length} Conflito(s) Detectado(s)!`;
+          
+          banner.style.display = 'flex';
+          detailsList.innerHTML = conflictsList.map(cf => 
+            `• <strong>${cf.dayName} (${cf.slotCode} - ${cf.time}):</strong> Colisão entre ${cf.classes.map(c => `<code>${c.code}</code> (${c.schedule_class})`).join(' e ')}`
+          ).join('<br>');
+        } else {
+          badge.className = 'badge badge-success';
+          badge.innerHTML = `<i class="fa-solid fa-circle-check"></i> 0 Conflitos (Horários Compatíveis)`;
+          banner.style.display = 'none';
+        }
+      }
+    }
+
+    // 9. Automação e Logs
+    async function startAutomation() {
+      const headless = document.getElementById('headless-checkbox').checked;
+      try {
+        const res = await fetch('/api/automation/start', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ headless: headless })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          startStatusPolling();
+        } else {
+          alert(data.error || 'Falha ao iniciar automação.');
+        }
+      } catch (err) {
+        alert('Erro ao iniciar automação.');
+      }
+    }
+
+    async function stopAutomation() {
+      try {
+        await fetch('/api/automation/stop', { method: 'POST' });
+      } catch (err) {
+        alert('Erro ao solicitar parada.');
+      }
+    }
+
+    function startStatusPolling() {
+      if (pollInterval) clearInterval(pollInterval);
+      pollInterval = setInterval(updateAutomationStatus, 1500);
+      updateAutomationStatus();
+    }
+
+    function stopStatusPolling() {
+      if (pollInterval) {
+        clearInterval(pollInterval);
+        pollInterval = null;
+      }
+    }
+
+    async function updateAutomationStatus() {
+      try {
+        const res = await fetch('/api/automation/status');
+        const data = await res.json();
+
+        const badge = document.getElementById('automation-badge');
+        const btnStart = document.getElementById('btn-start-auto');
+        const btnStop = document.getElementById('btn-stop-auto');
+
+        if (data.running) {
+          badge.className = 'badge badge-success';
+          badge.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Status: Em Execução';
+          btnStart.disabled = true;
+          btnStop.disabled = false;
+        } else {
+          badge.className = 'badge badge-warning';
+          badge.innerHTML = `<i class="fa-solid fa-circle"></i> Status: ${data.last_status || 'Parado'}`;
+          btnStart.disabled = false;
+          btnStop.disabled = true;
+        }
+
+        renderLogs(data.logs || []);
+      } catch (err) {
+        console.error('Erro ao buscar status da automação:', err);
+      }
+    }
+
+    function renderLogs(logs) {
+      const consoleEl = document.getElementById('terminal-console');
+      consoleEl.innerHTML = '';
+      logs.forEach(log => {
+        const div = document.createElement('div');
+        let levelClass = 'INFO';
+        if (log.includes('ERROR')) levelClass = 'ERROR';
+        if (log.includes('WARNING')) levelClass = 'WARNING';
+        div.className = `terminal-line ${levelClass}`;
+        div.innerText = log;
+        consoleEl.appendChild(div);
+      });
+      consoleEl.scrollTop = consoleEl.scrollHeight;
+    }
+
+    function clearLogs() {
+      document.getElementById('terminal-console').innerHTML = '';
+    }
+  </script>
+</body>
+</html>
